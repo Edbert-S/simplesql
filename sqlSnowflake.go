@@ -13,11 +13,10 @@ type snowflake struct {
 }
 
 type SnowflakeAuth struct {
-	authType  string
-	username  string
-	password  string
-	org       string
-	connected bool
+	AuthType string
+	Username string
+	Password string
+	Org      string
 }
 
 func Snowflake(db_name string, auth SnowflakeAuth) (snowflake, error) {
@@ -34,7 +33,7 @@ func Snowflake(db_name string, auth SnowflakeAuth) (snowflake, error) {
 
 func (s snowflake) connect() (*sql.DB, error) {
 	auth := s.SnowflakeAuth
-	if auth.authType == "okta" {
+	if auth.AuthType == "okta" {
 		db, err := s.okta_connect()
 		return db, err
 	} else {
@@ -44,7 +43,7 @@ func (s snowflake) connect() (*sql.DB, error) {
 
 func (s snowflake) okta_connect() (*sql.DB, error) {
 	a := s.SnowflakeAuth
-	url := fmt.Sprintf("https://%v.okta.com@%v-%v/%v", a.username, a.org, a.org, s.name)
+	url := fmt.Sprintf("https://%v.okta.com@%v-%v/%v", a.Username, a.Org, a.Username, s.Database.name)
 	db, err := sql.Open("snowflake", url)
 
 	if err != nil {
