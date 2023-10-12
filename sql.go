@@ -1,4 +1,4 @@
-package simpleSQL
+package simplesql
 
 import (
 	"database/sql"

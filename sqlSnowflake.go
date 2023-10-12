@@ -1,4 +1,4 @@
-package simpleSQL
+package simplesql
 
 import (
 	"database/sql"
@@ -7,7 +7,7 @@ import (
 	_ "github.com/snowflakedb/gosnowflake"
 )
 
-type snowflake struct {
+type Snowflake struct {
 	Database
 	SnowflakeAuth
 }
@@ -20,7 +20,7 @@ type SnowflakeAuth struct {
 	connected bool
 }
 
-func (s snowflake) new(db_name string, auth SnowflakeAuth) error {
+func (s Snowflake) new(db_name string, auth SnowflakeAuth) error {
 	s.SnowflakeAuth = auth
 	db, err := s.connect()
 	if err != nil {
@@ -30,7 +30,7 @@ func (s snowflake) new(db_name string, auth SnowflakeAuth) error {
 	return nil
 }
 
-func (s snowflake) connect() (*sql.DB, error) {
+func (s Snowflake) connect() (*sql.DB, error) {
 	auth := s.SnowflakeAuth
 	if auth.authType == "okta" {
 		db, err := s.okta_connect()
@@ -40,7 +40,7 @@ func (s snowflake) connect() (*sql.DB, error) {
 	}
 }
 
-func (s snowflake) okta_connect() (*sql.DB, error) {
+func (s Snowflake) okta_connect() (*sql.DB, error) {
 	a := s.SnowflakeAuth
 	url := fmt.Sprintf("https://%v.okta.com@%v-%v/%v", a.username, a.org, a.org, s.name)
 	db, err := sql.Open("snowflake", url)
@@ -52,11 +52,11 @@ func (s snowflake) okta_connect() (*sql.DB, error) {
 	return db, nil
 }
 
-func (s snowflake) CloseDB() error {
+func (s Snowflake) CloseDB() error {
 	err := s.CloseDB()
 	return err
 }
 
-func (s snowflake) Query(query string) (sql.Rows, error) {
+func (s Snowflake) Query(query string) (sql.Rows, error) {
 	return s.Query(query)
 }
