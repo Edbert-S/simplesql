@@ -17,11 +17,6 @@ type Database struct {
 	db   *sql.DB
 }
 
-func (d Database) new(name string, db *sql.DB) {
-	d.name = name
-	d.db = db
-}
-
 func (d Database) Connect() (*sql.DB, error) {
 	return nil, fmt.Errorf("Can't use Abstract functions directly")
 }
