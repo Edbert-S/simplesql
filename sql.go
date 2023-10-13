@@ -18,6 +18,11 @@ type Database struct {
 	db   *sql.DB
 }
 
+type Auth struct {
+	Username string
+	Password string
+}
+
 func (d Database) Connect() (*sql.DB, error) {
 	return nil, fmt.Errorf("Can't use Abstract functions directly")
 }
