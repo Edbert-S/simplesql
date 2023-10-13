@@ -15,7 +15,7 @@ type snowflake struct {
 type SnowflakeAuth struct {
 	Username          string
 	Password          string
-	AuthType          string `default:"externalbrowser"`
+	AuthType          string
 	Org               string
 	SnowflakeUsername string
 }
@@ -33,10 +33,7 @@ func NewSnowflakeConnection(db_name string, auth SnowflakeAuth) (snowflake, erro
 }
 
 func (s snowflake) connect() (*sql.DB, error) {
-	url, err := s.urlBuilder()
-	if err != nil {
-		return nil, err
-	}
+	url := s.urlBuilder()
 
 	db, err := sql.Open("snowflake", url)
 	if err != nil {
@@ -61,9 +58,6 @@ func (s snowflake) Query(query string) (sql.Rows, error) {
 	return s.Query(query)
 }
 
-func (s snowflake) urlBuilder() (string, error) {
-	if s.SnowflakeAuth.AuthType == "external" {
-		return fmt.Sprintf("%v:%v@%v-%v/%v?authenticator=%v", s.Username, s.Password, s.Org, s.SnowflakeUsername, s.Database.name, s.AuthType), nil
-	}
-	return "", fmt.Errorf("Auth type not added")
+func (s snowflake) urlBuilder() string {
+	return fmt.Sprintf("%v:%v@%v-%v/%v?authenticator=%v", s.Username, s.Password, s.Org, s.SnowflakeUsername, s.Database.name, s.AuthType)
 }
