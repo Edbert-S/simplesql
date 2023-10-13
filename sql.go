@@ -10,7 +10,7 @@ type DB interface {
 	Database()
 	Query() sql.Rows
 	CloseDB() error
-	Ping()
+	Ping() error
 }
 
 type Database struct {
