@@ -10,6 +10,7 @@ type DB interface {
 	Database()
 	Query() sql.Rows
 	CloseDB() error
+	Ping()
 }
 
 type Database struct {
@@ -41,4 +42,8 @@ func (d *Database) CloseDB() error {
 		return err
 	}
 	return nil
+}
+
+func (d *Database) Ping() error {
+	return d.Ping()
 }

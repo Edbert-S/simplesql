@@ -32,18 +32,13 @@ func Snowflake(db_name string, auth SnowflakeAuth) (snowflake, error) {
 }
 
 func (s snowflake) connect() (*sql.DB, error) {
+	url := ""
 	auth := s.SnowflakeAuth
 	if auth.AuthType == "okta" {
-		db, err := s.okta_connect()
-		return db, err
+		url = s.okta_connect()
 	} else {
-		return nil, fmt.Errorf("Invalid authType")
+		return nil, fmt.Errorf("Unimplemented authType")
 	}
-}
-
-func (s snowflake) okta_connect() (*sql.DB, error) {
-	a := s.SnowflakeAuth
-	url := fmt.Sprintf("https://%v.okta.com@%v-%v/%v", a.Username, a.Org, a.Username, s.Database.name)
 	db, err := sql.Open("snowflake", url)
 
 	if err != nil {
@@ -51,6 +46,12 @@ func (s snowflake) okta_connect() (*sql.DB, error) {
 	}
 
 	return db, nil
+}
+
+func (s snowflake) okta_connect() string {
+	a := s.SnowflakeAuth
+	url := fmt.Sprintf("https://%v.okta.com@%v-%v/%v", a.Username, a.Org, a.Username, s.Database.name)
+	return url
 }
 
 func (s snowflake) CloseDB() error {
