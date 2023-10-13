@@ -20,7 +20,7 @@ type SnowflakeAuth struct {
 	SnowflakeUsername string
 }
 
-func NewSnowflakeConnection(db_name string, schema string, auth SnowflakeAuth) (snowflake, error) {
+func NewSnowflakeConnection(db_name string, auth SnowflakeAuth) (snowflake, error) {
 	s := snowflake{}
 	db, err := s.connect()
 	s.Database.db = db
