@@ -13,8 +13,7 @@ type DB interface {
 }
 
 type Database struct {
-	name string
-	db   *sql.DB
+	DB *sql.DB
 }
 
 func (d *Database) Connect() (*sql.DB, error) {
@@ -22,7 +21,7 @@ func (d *Database) Connect() (*sql.DB, error) {
 }
 
 func (d *Database) Query(query string) (rows *sql.Rows, err error) {
-	prepedQuery, err := d.db.Prepare(query)
+	prepedQuery, err := d.DB.Prepare(query)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +35,7 @@ func (d *Database) Query(query string) (rows *sql.Rows, err error) {
 }
 
 func (d *Database) CloseDB() error {
-	err := d.db.Close()
+	err := d.DB.Close()
 	if err != nil {
 		return err
 	}

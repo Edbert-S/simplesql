@@ -20,11 +20,10 @@ type SnowflakeAuth struct {
 	SnowflakeUsername string
 }
 
-func NewSnowflakeConnection(db_name string, auth SnowflakeAuth) (snowflake, error) {
+func NewSnowflakeConnection(auth SnowflakeAuth) (snowflake, error) {
 	s := snowflake{}
 	db, err := s.connect()
-	s.Database.db = db
-	s.Database.name = db_name
+	s.Database.DB = db
 	if err != nil {
 		return s, err
 	}
@@ -33,16 +32,11 @@ func NewSnowflakeConnection(db_name string, auth SnowflakeAuth) (snowflake, erro
 }
 
 func (s snowflake) connect() (*sql.DB, error) {
-	url := s.urlBuilder()
-
+	url := s.UrlBuilder()
+	fmt.Print(url)
 	db, err := sql.Open("snowflake", url)
 	if err != nil {
 		db.Close()
-		return nil, err
-	}
-	err = db.Ping()
-
-	if err != nil {
 		return nil, err
 	}
 
@@ -58,6 +52,13 @@ func (s snowflake) Query(query string) (sql.Rows, error) {
 	return s.Query(query)
 }
 
-func (s snowflake) urlBuilder() string {
-	return fmt.Sprintf("%v:%v@%v-%v/%v?authenticator=%v", s.Username, s.Password, s.Org, s.SnowflakeUsername, s.Database.name, s.AuthType)
+func (s snowflake) UrlBuilder() string {
+	return fmt.Sprintf("%v:%v@%v-%v?authenticator=%v",
+		s.Username,
+		s.Password,
+		s.Org,
+		s.SnowflakeUsername,
+		// s.Database.Name,
+		s.AuthType,
+	)
 }
