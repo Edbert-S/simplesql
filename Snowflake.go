@@ -7,7 +7,7 @@ import (
 	_ "github.com/snowflakedb/gosnowflake"
 )
 
-type snowflake struct {
+type Snowflake struct {
 	Database
 	SnowflakeAuth
 }
@@ -20,9 +20,9 @@ type SnowflakeAuth struct {
 	SnowflakeUsername string
 }
 
-func NewSnowflakeConnection(auth SnowflakeAuth) (snowflake, error) {
+func NewSnowflakeConnection(auth SnowflakeAuth) (Snowflake, error) {
 
-	s := snowflake{
+	s := Snowflake{
 		SnowflakeAuth: auth,
 	}
 
@@ -35,7 +35,7 @@ func NewSnowflakeConnection(auth SnowflakeAuth) (snowflake, error) {
 	return s, nil
 }
 
-func (s snowflake) connect() (*sql.DB, error) {
+func (s Snowflake) connect() (*sql.DB, error) {
 	url := s.UrlBuilder()
 	fmt.Print(url)
 	db, err := sql.Open("snowflake", url)
@@ -47,16 +47,16 @@ func (s snowflake) connect() (*sql.DB, error) {
 	return db, nil
 }
 
-func (s snowflake) CloseDB() error {
+func (s Snowflake) CloseDB() error {
 	err := s.Database.CloseDB()
 	return err
 }
 
-func (s snowflake) Query(query string) (*sql.Rows, error) {
+func (s Snowflake) Query(query string) (*sql.Rows, error) {
 	return s.Database.Query(query)
 }
 
-func (s snowflake) UrlBuilder() string {
+func (s Snowflake) UrlBuilder() string {
 	return fmt.Sprintf("%v:%v@%v-%v?authenticator=%v",
 		s.Username,
 		s.Password,
