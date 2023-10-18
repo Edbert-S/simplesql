@@ -17,16 +17,16 @@ type Database struct {
 }
 
 func (d *Database) Connect() (*sql.DB, error) {
-	return nil, fmt.Errorf("Can't use Abstract functions directly")
+	return nil, fmt.Errorf("can't use abstract functions directly")
 }
 
 func (d *Database) Query(query string) (rows *sql.Rows, err error) {
-	prepedQuery, err := d.DB.Prepare(query)
+	q, err := d.DB.Prepare(query)
 	if err != nil {
 		return nil, err
 	}
 
-	r, err := prepedQuery.Query()
+	r, err := q.Query()
 	if err != nil {
 		return nil, err
 	}
@@ -43,5 +43,5 @@ func (d *Database) CloseDB() error {
 }
 
 func (d *Database) Ping() error {
-	return d.Ping()
+	return d.DB.Ping()
 }
