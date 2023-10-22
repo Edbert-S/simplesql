@@ -1,4 +1,4 @@
-package simplesql
+package simplesql/Snowflake
 
 import (
 	"database/sql"
