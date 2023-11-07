@@ -7,13 +7,20 @@ import (
 	"github.com/Edbert-S/simplesql"
 )
  
-type Snowflake struct {
+type MySql struct {
 	Database
 	MysqlAuth
 }
 
-type MysqlAuth struct {}
+type MysqlAuth struct {
+	Username string
+	Password string
+	Name string
+	Port int
+	Host string
+	Protocol string
+}
 
-func NewMysql() {
+func NewMySqlConnection() {
 
 }
